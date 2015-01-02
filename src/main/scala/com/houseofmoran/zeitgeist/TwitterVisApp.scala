@@ -1,48 +1,12 @@
 package com.houseofmoran.zeitgeist
 
-import java.io.PrintWriter
-import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
 import com.houseofmoran.spark.twitter.TwitterStreamSource
 import org.apache.spark._
-import org.apache.spark.rdd.RDD
 import org.apache.spark.streaming._
-import org.eclipse.jetty.server.handler.{AbstractHandler, HandlerList, ResourceHandler}
-import org.eclipse.jetty.server.{Handler, Request, Server}
-import twitter4j.Status
+import org.eclipse.jetty.server.handler.{HandlerList, ResourceHandler}
+import org.eclipse.jetty.server.{Handler, Server}
 
 import scala.util.Properties
-
-
-case class TweetSample() {
-  var possibleSample : Option[Seq[Status]] = None
-
-  def summarise(writer: PrintWriter): Unit = {
-    for (sample <- possibleSample) {
-      val entries = for(status <- sample if status.getGeoLocation() != null)
-        yield "{ \"id\" : \"" + status.getId + "\", \"location\" :" +
-          " { \"lat\": " + status.getGeoLocation.getLatitude + ", \"lon\": " + status.getGeoLocation.getLongitude + "} }"
-
-      writer.println(entries.mkString(",\n"))
-    }
-  }
-
-  def newWindow(window: RDD[(Long, Status)]) : Unit = {
-    possibleSample = Some(window.takeSample(true, 10).map{ case (_, status) => status })
-  }
-}
-
-class TweetSampleHandler(sample: TweetSample) extends AbstractHandler {
-  override def handle(target: String, baseRequest: Request,
-                      request: HttpServletRequest, response: HttpServletResponse): Unit =
-  {
-    response.setContentType("application/json; charset=utf-8")
-    response.setStatus(HttpServletResponse.SC_OK)
-    response.getWriter().println("[")
-    sample.summarise(response.getWriter)
-    response.getWriter().println("]")
-    baseRequest.setHandled(true);
-  }
-}
 
 object TwitterVisApp {
   def main(args: Array[String]): Unit = {
