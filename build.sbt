@@ -20,7 +20,8 @@ libraryDependencies ++= Seq(
 libraryDependencies ++= Seq(
   "org.slf4j" % "slf4j-log4j12" % "1.7.5",
   "org.mortbay.jetty" % "servlet-api" % "3.0.20100224",
-  "org.eclipse.jetty" % "jetty-project" % "9.2.6.v20141205" )
+  "org.eclipse.jetty" % "jetty-project" % "9.2.6.v20141205",
+  "org.json4s" %% "json4s-native" % "3.2.10" )
 
 libraryDependencies ++= Seq(
   "org.scalatest" % "scalatest_2.11" % "2.2.1" % "test")
