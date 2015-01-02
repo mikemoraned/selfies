@@ -66,15 +66,15 @@ object TwitterVisApp {
         TwitterStreamSource.streamFromEnv()
       }
 
-//    val sample = new TweetSample
-//
-//    val sampleHandler = new TweetSampleHandler(sample)
-//
-//    val stream = twitterStream.
-//      filter(status => status.getGeoLocation() != null).
-//      map(status => (status.getId, status))
-//
-//    stream.foreachRDD( rdd => sample.newWindow(rdd) )
+    val sample = new TweetSample
+
+    val sampleHandler = new TweetSampleHandler(sample)
+
+    val stream = twitterStream.
+      filter(status => status.getGeoLocation() != null).
+      map(status => (status.getId, status))
+
+    stream.foreachRDD( rdd => sample.newWindow(rdd) )
 
     val server = new Server(Properties.envOrElse("PORT", "8080").toInt)
 
@@ -83,13 +83,12 @@ object TwitterVisApp {
     resources.setResourceBase("./src/main/resources")
 
     val handlers = new HandlerList()
-//    handlers.setHandlers(Array[Handler]( resources, sampleHandler ))
-    handlers.setHandlers(Array[Handler]( resources ))
+    handlers.setHandlers(Array[Handler]( resources, sampleHandler ))
 
     server.setHandler(handlers)
     server.start()
 
-//    ssc.start()
-//    ssc.awaitTermination()
+    ssc.start()
+    ssc.awaitTermination()
   }
 }
