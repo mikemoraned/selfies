@@ -9,11 +9,13 @@ class TweetSampleHandler(sample: TweetSample) extends AbstractHandler {
    override def handle(target: String, baseRequest: Request,
                        request: HttpServletRequest, response: HttpServletResponse): Unit =
    {
-     response.setContentType("application/json; charset=utf-8")
-     response.setStatus(HttpServletResponse.SC_OK)
-     response.getWriter().println("[")
-     sample.summarise(response.getWriter)
-     response.getWriter().println("]")
-     baseRequest.setHandled(true);
+     if (target == "/api/sample") {
+       response.setContentType("application/json; charset=utf-8")
+       response.setStatus(HttpServletResponse.SC_OK)
+       response.getWriter().println("[")
+       sample.summarise(response.getWriter)
+       response.getWriter().println("]")
+       baseRequest.setHandled(true);
+     }
    }
  }
