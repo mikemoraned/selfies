@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .land {
+            fill: #6FC480;
+            stroke: #000000;
+        }
+
+        .graticule {
+            fill: none;
+            stroke: #777;
+            stroke-opacity: .5;
+            stroke-width: .5px;
+        }
+
+        .bounds {
+            fill: red;
+            stroke: #777;
+        }
+    </style>
+</head>
+<body>
+
+<svg width="100%" height="800">
+</svg>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+<script src="ngeohash.js"></script>
+
+<script>
+    var ngeohash = require('ngeohash');
+
+    var width = 840;
+    var height = 800;
+    var projection = d3.geo.orthographic()
+//var projection = d3.geo.albers()
+//var projection = d3.geo.mercator()
+            .scale(170)
+            .rotate([100,0,0])
+            .translate([width/2, height/2])
+            .clipAngle(90);
+
+    d3.json("world110.json", function(err, world) {
+        console.log("data", world)
+        var land = topojson.feature(world, world.objects.land);
+        var countries = topojson.feature(world, world.objects.countries).features;
+        console.log("countries", land)
+
+        var svg = d3.select("svg");
+        var path = d3.geo.path()
+                .projection(projection);
+        var graticule = d3.geo.graticule()
+        svg.append("path")
+                .datum(graticule)
+                .attr("class", "graticule")
+                .attr("d", path);
+        svg.append("path")
+                .attr("d", path(land))
+                .classed("land", true);
+
+        function showTweets(tweets) {
+            console.log("tweets", tweets);
+
+            d3.transition()
+                    .duration(2000)
+                    .each("start", function () {
+                        console.log("start");
+                        d3.select(".bounds").remove();
+                    })
+                    .tween("rotate", function () {
+                        console.log("rotate");
+                        var i = Math.floor(Math.random() * (tweets.length - 1));
+                        var tweet = tweets[i];
+
+                        var geohash = ngeohash.encode(tweet.location.lat, tweet.location.lon, 3);
+                        console.log(tweet.id, ", geohash: ", geohash);
+                        var bbox = ngeohash.decode_bbox(geohash);
+                        var minlat = bbox[0], minlon = bbox[1], maxlat = bbox[2], maxlon = bbox[3];
+
+                        var boundsPolygon = {
+                            type: "Feature",
+                            geometry: {
+                                type: "Polygon",
+                                properties: {},
+//                                coordinates: [[b[0], [b[0][0], b[1][1]], b[1], [b[1][0], b[0][1]], b[0]]]
+                                coordinates: [[
+                                    [minlon, minlat],
+                                    [minlon, maxlat],
+                                    [maxlon, maxlat],
+                                    [maxlon, minlat],
+                                    [minlon, minlat] ]]
+                            }
+                        };
+
+                        var p = d3.geo.centroid(boundsPolygon),
+                                r = d3.interpolate(projection.rotate(), [-p[0], -p[1]]);
+
+                        console.log("poly", boundsPolygon);
+
+                        return function (t) {
+                            projection.rotate(r(t));
+                            d3.select(".graticule").attr("d", path);
+                            d3.select(".land").attr("d", path(land));
+                            d3.select(".bounds").remove();
+                            svg.append("path")
+                                    .attr("d", path(boundsPolygon))
+                                    .classed("bounds", true);
+                        };
+                    })
+                    .transition();
+        };
+
+        function fetchTweetSample() {
+            d3.json("/api/sample", function(e, json) {
+                if (e) {
+                    console.dir(e);
+                }
+                else
+                {
+                    showTweets(json);
+                }
+            })
+        }
+
+        fetchTweetSample();
+
+        setInterval(fetchTweetSample, 2000);
+    })
+</script>
+</body>
+</html>

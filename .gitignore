@@ -1,2 +1,7 @@
 target/
-.idea/
+oauth.properties
+checkpoint/
+.idea/workspace.xml
+.idea/dictionaries/
+firehose-geo-oauth.properties
+geotweets

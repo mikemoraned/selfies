@@ -1,0 +1,6 @@
+# go to https://apps.twitter.com/ to create an app and generate an access token
+# then save this as oauth.properties
+twitter4j.oauth.consumerKey=
+twitter4j.oauth.consumerSecret=
+twitter4j.oauth.accessToken=
+twitter4j.oauth.accessTokenSecret=
