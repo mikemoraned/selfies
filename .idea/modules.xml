@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/scala-play-sbt.iml" filepath="$PROJECT_DIR$/.idea/modules/scala-play-sbt.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/scala-play-sbt-build.iml" filepath="$PROJECT_DIR$/.idea/modules/scala-play-sbt-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/zeitgeist.iml" filepath="$PROJECT_DIR$/.idea/modules/zeitgeist.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/zeitgeist-build.iml" filepath="$PROJECT_DIR$/.idea/modules/zeitgeist-build.iml" />
     </modules>
   </component>
 </project>
