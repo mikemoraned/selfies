@@ -6,6 +6,8 @@ name := """zeitgeist"""
 
 version := "1.0"
 
+mainClass in Compile := Some("com.houseofmoran.spark.play.twitter.TwitterVisApp")
+
 scalaVersion := "2.11.4"
   
 libraryDependencies ++= Seq(
