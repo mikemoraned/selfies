@@ -51,13 +51,21 @@ class TweetSampleHandler(sample: TweetSample) extends AbstractHandler {
 
 object TwitterVisApp {
   def main(args: Array[String]): Unit = {
-//    val conf = new SparkConf().setAppName("TwitterVisApp").setMaster("local[*]")
-//    val sc = new SparkContext(conf)
-//    val windowLength = Seconds(10)
-//    implicit val ssc = new StreamingContext(sc, windowLength)
-//
-//    val twitterStream = TwitterStreamSource.streamFromAuthIn(args(0))
-//
+    val conf = new SparkConf().setAppName("TwitterVisApp").setMaster("local[*]")
+    val sc = new SparkContext(conf)
+    val windowLength = Seconds(10)
+    implicit val ssc = new StreamingContext(sc, windowLength)
+
+    val twitterStream =
+      if (args.length > 0) {
+        println("Reading auth from file")
+        TwitterStreamSource.streamFromAuthIn(args(0))
+      }
+      else {
+        println("Reading auth from env")
+        TwitterStreamSource.streamFromEnv()
+      }
+
 //    val sample = new TweetSample
 //
 //    val sampleHandler = new TweetSampleHandler(sample)
