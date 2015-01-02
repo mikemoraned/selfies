@@ -16,7 +16,7 @@
             stroke-width: .5px;
         }
 
-        .bounds {
+        .latest {
             fill: red;
             stroke: #777;
         }
@@ -57,34 +57,34 @@
                 .classed("land", true);
 
         function showTweets(tweets) {
+            var i = Math.floor(Math.random() * (tweets.length - 1));
+            var tweet = tweets[i];
+
+            var geohash = ngeohash.encode(tweet.location.lat, tweet.location.lon, 3);
+            var bbox = ngeohash.decode_bbox(geohash);
+            var minlat = bbox[0], minlon = bbox[1], maxlat = bbox[2], maxlon = bbox[3];
+
+            var boundsPolygon = {
+                type: "Feature",
+                geometry: {
+                    type: "Polygon",
+                    properties: {},
+                    coordinates: [[
+                        [minlon, minlat],
+                        [minlon, maxlat],
+                        [maxlon, maxlat],
+                        [maxlon, minlat],
+                        [minlon, minlat] ]]
+                }
+            };
+
             d3.transition()
                     .duration(2000)
                     .each("start", function () {
                         console.log("start");
-                        d3.select(".bounds").remove();
+                        d3.select(".latest").remove();
                     })
                     .tween("rotate", function () {
-                        var i = Math.floor(Math.random() * (tweets.length - 1));
-                        var tweet = tweets[i];
-
-                        var geohash = ngeohash.encode(tweet.location.lat, tweet.location.lon, 3);
-                        var bbox = ngeohash.decode_bbox(geohash);
-                        var minlat = bbox[0], minlon = bbox[1], maxlat = bbox[2], maxlon = bbox[3];
-
-                        var boundsPolygon = {
-                            type: "Feature",
-                            geometry: {
-                                type: "Polygon",
-                                properties: {},
-                                coordinates: [[
-                                    [minlon, minlat],
-                                    [minlon, maxlat],
-                                    [maxlon, maxlat],
-                                    [maxlon, minlat],
-                                    [minlon, minlat] ]]
-                            }
-                        };
-
                         var p = d3.geo.centroid(boundsPolygon),
                                 r = d3.interpolate(projection.rotate(), [-p[0], -p[1]]);
 
@@ -92,10 +92,10 @@
                             projection.rotate(r(t));
                             d3.select(".graticule").attr("d", path);
                             d3.select(".land").attr("d", path(land));
-                            d3.select(".bounds").remove();
+                            d3.select(".latest").remove();
                             svg.append("path")
                                     .attr("d", path(boundsPolygon))
-                                    .classed("bounds", true);
+                                    .classed("latest", true);
                         };
                     })
                     .transition();
