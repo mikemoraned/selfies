@@ -1,4 +1,4 @@
-package com.houseofmoran.spark.play.twitter
+package com.houseofmoran.spark.twitter
 
 import java.io.FileReader
 import java.util.Properties

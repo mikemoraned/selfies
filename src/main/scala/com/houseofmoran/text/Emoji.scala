@@ -1,4 +1,4 @@
-package com.houseofmoran.spark.play.twitter
+package com.houseofmoran.text
 
 object Emoji {
   def findEmoji(s: String) : Set[Emoji] = {

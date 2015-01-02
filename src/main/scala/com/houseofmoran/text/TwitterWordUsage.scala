@@ -1,6 +1,4 @@
-package com.houseofmoran.spark.play.twitter
-
-import scala.collection.JavaConversions._
+package com.houseofmoran.text
 
 object TwitterWordUsage {
   def mapWordsToEmoji(s: String) : Map[String, Emoji] = {

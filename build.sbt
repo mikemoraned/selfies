@@ -6,7 +6,7 @@ name := """zeitgeist"""
 
 version := "1.0"
 
-mainClass in Compile := Some("com.houseofmoran.spark.play.twitter.TwitterVisApp")
+mainClass in Compile := Some("com.houseofmoran.zeitgeist.TwitterVisApp")
 
 scalaVersion := "2.11.4"
   

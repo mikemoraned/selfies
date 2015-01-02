@@ -1,18 +1,13 @@
-package com.houseofmoran.spark.play.twitter
+package com.houseofmoran.zeitgeist
 
 import java.io.PrintWriter
-import javax.servlet.http.{HttpServletResponse, HttpServletRequest}
-
-import com.github.nscala_time.time.Imports._
-import org.apache.hadoop.io.compress.GzipCodec
+import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
+import com.houseofmoran.spark.twitter.TwitterStreamSource
 import org.apache.spark._
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.SQLContext
 import org.apache.spark.streaming._
-import org.eclipse.jetty.server.{Handler, Server, Request}
-import org.eclipse.jetty.server.handler.{HandlerList, ResourceHandler, AbstractHandler}
-import org.joda.time.DateTime
-import org.joda.time.format.ISODateTimeFormat
+import org.eclipse.jetty.server.handler.{AbstractHandler, HandlerList, ResourceHandler}
+import org.eclipse.jetty.server.{Handler, Request, Server}
 import twitter4j.Status
 
 import scala.util.Properties

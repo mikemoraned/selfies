@@ -1,9 +1,8 @@
-package com.houseofmoran.spark.play.twitter
+package com.houseofmoran.spark
 
-import java.io.{FilenameFilter, File}
+import java.io.{File, FilenameFilter}
 
-import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.{SchemaRDD, Row, SQLContext}
+import org.apache.spark.sql.{SQLContext, SchemaRDD}
 
 class ParquetLoadHelper(sqlContext: SQLContext) {
   def parquetFiles(dirName: String) : SchemaRDD = {

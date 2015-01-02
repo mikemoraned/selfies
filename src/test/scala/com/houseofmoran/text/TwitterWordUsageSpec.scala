@@ -1,5 +1,6 @@
 package com.houseofmoran.spark.play.twitter
 
+import com.houseofmoran.text.{Emoji, TwitterWordUsage}
 import org.scalatest._
 
 class TwitterWordUsageSpec extends FeatureSpec with GivenWhenThen {
