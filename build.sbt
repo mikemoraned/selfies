@@ -24,8 +24,3 @@ libraryDependencies ++= Seq(
 
 libraryDependencies ++= Seq(
   "org.scalatest" % "scalatest_2.11" % "2.2.1" % "test")
-
-libraryDependencies ++= Seq(
-  "com.twitter" % "finagle-http_2.10" % "6.18.0",
-  "postgresql" % "postgresql" % "9.0-801.jdbc4"
-)
