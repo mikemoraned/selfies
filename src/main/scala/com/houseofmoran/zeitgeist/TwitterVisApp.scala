@@ -26,8 +26,10 @@ object TwitterVisApp {
       }
 
     val sample = new TweetSample
+    val geoHistory = new GeoHistory
 
-    val sampleHandler = new SnapshotHandler(Map("sample" -> sample))
+    val sampleHandler = new SnapshotHandler(Map(
+      ("sample" -> sample), ("geohistory" -> geoHistory)))
 
     val stream = twitterStream.
       filter(status => status.getGeoLocation() != null).
