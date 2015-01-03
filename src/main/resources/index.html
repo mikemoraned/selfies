@@ -17,7 +17,7 @@
         }
 
         .tweet.keep {
-            fill: blue;
+            fill: green;
             stroke: #777;
         }
 
@@ -97,33 +97,9 @@
             return path(featureFromTweet(tweet));
         }
 
-        var allTweetGeoHashSet = {};
 
-        function showTweets(tweets) {
-            for(var i = 0; i < tweets.length; i++) {
-                var tweet = tweets[i];
-                var geohash = geohashFromTweet(tweet);
-                if (typeof allTweetGeoHashSet[geohash] === "undefined") {
-                    allTweetGeoHashSet[geohash] = tweet;
-                }
-            }
 
-            var allGeoHashes = [];
-            for (var geohash in allTweetGeoHashSet) {
-                if (allTweetGeoHashSet.hasOwnProperty(geohash)) {
-                    allGeoHashes.push(geohash);
-                }
-            }
-
-            svg.selectAll(".tweet.keep")
-                .data(allGeoHashes)
-                    .attr("d", pathFromGeohash)
-                .enter()
-                    .append("path")
-                    .attr("d", pathFromGeohash)
-                    .classed("tweet", true)
-                    .classed("keep", true);
-
+        function showTweetSample(tweets) {
             var i = Math.floor(Math.random() * (tweets.length - 1));
             var tweet = tweets[i];
 
@@ -154,6 +130,25 @@
                     })
                     .transition();
         }
+
+        function showGeoHistory(history) {
+            var allGeoHashes = [];
+            for (var geohash in history) {
+                if (history.hasOwnProperty(geohash)) {
+                    allGeoHashes.push(geohash);
+                }
+            }
+
+            svg.selectAll(".tweet.keep")
+                    .data(allGeoHashes)
+                    .attr("d", pathFromGeohash)
+                    .enter()
+                    .append("path")
+                    .attr("d", pathFromGeohash)
+                    .classed("tweet", true)
+                    .classed("keep", true);
+        }
+
         function fetchTweetSample() {
             d3.json("/api/sample", function(e, json) {
                 if (e) {
@@ -161,7 +156,7 @@
                 }
                 else
                 {
-                    showTweets(json);
+                    showTweetSample(json);
                 }
             })
         }
@@ -169,6 +164,22 @@
         fetchTweetSample();
 
         setInterval(fetchTweetSample, 5000);
+
+        function fetchGeoHistory() {
+            d3.json("/api/geohistory", function(e, json) {
+                if (e) {
+                    console.dir(e);
+                }
+                else
+                {
+                    showGeoHistory(json);
+                }
+            })
+        }
+
+        fetchGeoHistory();
+
+        setInterval(fetchGeoHistory, 5000);
     })
 </script>
 </body>
