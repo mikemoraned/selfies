@@ -81,7 +81,23 @@
             };
         }
 
+        function pathFromTweet(tweet) {
+            return path(featureFromTweet(tweet));
+        }
+
+        var allTweets = [];
+
         function showTweets(tweets) {
+            allTweets = allTweets.concat(tweets);
+            svg.selectAll(".tweet.keep")
+                .data(allTweets, function(tweet) { return tweet.id; })
+                    .attr("d", pathFromTweet)
+                .enter()
+                    .append("path")
+                    .attr("d", pathFromTweet)
+                    .classed("tweet", true)
+                    .classed("keep", true);
+
             var i = Math.floor(Math.random() * (tweets.length - 1));
             var tweet = tweets[i];
 
@@ -101,7 +117,8 @@
                             projection.rotate(r(t));
                             d3.select(".graticule").attr("d", path);
                             d3.select(".land").attr("d", path(land));
-                            d3.select(".tweet.keep").attr("d", path);
+                            d3.selectAll(".tweet.keep").attr("d", pathFromTweet);
+
                             d3.select(".tweet.latest").remove();
                             svg.append("path")
                                     .attr("d", path(tweetFeature))
