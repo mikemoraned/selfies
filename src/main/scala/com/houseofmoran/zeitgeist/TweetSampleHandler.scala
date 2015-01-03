@@ -1,12 +1,9 @@
 package com.houseofmoran.zeitgeist
 
-import javax.servlet.http.{HttpServletResponse, HttpServletRequest}
+import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
 
 import org.eclipse.jetty.server.Request
 import org.eclipse.jetty.server.handler.AbstractHandler
-
-import org.json4s._
-import org.json4s.JsonDSL._
 import org.json4s.native.JsonMethods._
 
 class TweetSampleHandler(sample: TweetSample) extends AbstractHandler {

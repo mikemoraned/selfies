@@ -511,4 +511,4 @@ module.exports = geohash;
 
 },{}],"ngeohash":[function(require,module,exports){
 module.exports=require('7XxIq+');
-},{}]},{},[])
+},{}]},{},[]);
