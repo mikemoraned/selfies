@@ -85,10 +85,18 @@
             return path(featureFromTweet(tweet));
         }
 
+        var allTweetIds = {};
         var allTweets = [];
 
         function showTweets(tweets) {
-            allTweets = allTweets.concat(tweets);
+            for(var i = 0; i < tweets.length; i++) {
+                var tweet = tweets[i];
+                if (typeof allTweetIds[tweet.id] === "undefined") {
+                    allTweets.push(tweet);
+                    allTweetIds[tweet.id] = tweet;
+                }
+            }
+
             svg.selectAll(".tweet.keep")
                 .data(allTweets, function(tweet) { return tweet.id; })
                     .attr("d", pathFromTweet)
