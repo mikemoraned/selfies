@@ -112,9 +112,15 @@
             return path(featureFromGeohash(geohash));
         }
 
-        function showTweetSample(tweets) {
+        function chooseRandom(tweets) {
             var i = Math.floor(Math.random() * (tweets.length - 1));
-            var tweet = tweets[i];
+            return tweets[i];
+        }
+
+//        var lastChosenTweetId = -1;
+        function showTweetSample(tweets) {
+            var tweet = chooseRandom(tweets);
+
 
             var tweetFeature = featureFromTweet(tweet);
 
