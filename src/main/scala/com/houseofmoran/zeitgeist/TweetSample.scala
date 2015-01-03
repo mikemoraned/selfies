@@ -5,7 +5,7 @@ import org.json4s._
 import twitter4j.Status
 import org.json4s.JsonDSL._
 
-case class TweetSample() {
+case class TweetSample() extends Snapshotable {
   var possibleSample : Option[Seq[Status]] = None
 
   def newWindow(window: RDD[(Long, Status)]) : Unit = {
