@@ -1,14 +1,22 @@
 package com.houseofmoran.zeitgeist
 
+import ch.hsr.geohash.GeoHash
 import com.houseofmoran.spark.twitter.TwitterStreamSource
 import org.apache.spark._
+import org.apache.spark.streaming.StreamingContext._
 import org.apache.spark.streaming._
 import org.eclipse.jetty.server.handler.{HandlerList, ResourceHandler}
 import org.eclipse.jetty.server.{Handler, Server}
+import twitter4j.GeoLocation
 
 import scala.util.Properties
 
 object TwitterVisApp {
+
+  def toGeoHash(location: GeoLocation, depth: Int): String = {
+    GeoHash.withCharacterPrecision(location.getLatitude, location.getLongitude, depth).toBase32;
+  }
+
   def main(args: Array[String]): Unit = {
     val conf = new SparkConf().setAppName("TwitterVisApp").setMaster("local[*]")
     val sc = new SparkContext(conf)
@@ -31,11 +39,15 @@ object TwitterVisApp {
     val sampleHandler = new SnapshotHandler(Map(
       ("sample" -> sample), ("geohistory" -> geoHistory)))
 
-    val stream = twitterStream.
-      filter(status => status.getGeoLocation() != null).
-      map(status => (status.getId, status))
+    val geoStatuses = twitterStream.
+      filter(status => status.getGeoLocation() != null)
 
-    stream.foreachRDD( rdd => sample.newWindow(rdd) )
+    geoStatuses.map(status => (status.getId, status)).
+      foreachRDD( rdd => sample.newWindow(rdd) )
+
+    geoStatuses.map(status => (toGeoHash(status.getGeoLocation(), 3), 1)).
+      reduceByKey(_ + _).
+      foreachRDD( rdd => geoHistory.newCounts(rdd) )
 
     val server = new Server(Properties.envOrElse("PORT", "8080").toInt)
 
