@@ -16,7 +16,12 @@
             stroke-width: .5px;
         }
 
-        .latest {
+        .tweet.keep {
+            fill: blue;
+            stroke: #777;
+        }
+
+        .tweet.latest {
             fill: red;
             stroke: #777;
         }
@@ -56,15 +61,12 @@
                 .attr("d", path(land))
                 .classed("land", true);
 
-        function showTweets(tweets) {
-            var i = Math.floor(Math.random() * (tweets.length - 1));
-            var tweet = tweets[i];
-
+        function featureFromTweet(tweet) {
             var geohash = ngeohash.encode(tweet.location.lat, tweet.location.lon, 3);
             var bbox = ngeohash.decode_bbox(geohash);
             var minlat = bbox[0], minlon = bbox[1], maxlat = bbox[2], maxlon = bbox[3];
 
-            var boundsPolygon = {
+            return {
                 type: "Feature",
                 geometry: {
                     type: "Polygon",
@@ -77,24 +79,33 @@
                         [minlon, minlat] ]]
                 }
             };
+        }
+
+        function showTweets(tweets) {
+            var i = Math.floor(Math.random() * (tweets.length - 1));
+            var tweet = tweets[i];
+
+            var tweetFeature = featureFromTweet(tweet);
 
             d3.transition()
                     .duration(2000)
                     .each("start", function () {
                         console.log("start");
-                        d3.select(".latest").remove();
+                        d3.select(".tweet.latest").remove();
                     })
                     .tween("rotate", function () {
-                        var p = d3.geo.centroid(boundsPolygon),
+                        var p = d3.geo.centroid(tweetFeature),
                                 r = d3.interpolate(projection.rotate(), [-p[0], -p[1]]);
 
                         return function (t) {
                             projection.rotate(r(t));
                             d3.select(".graticule").attr("d", path);
                             d3.select(".land").attr("d", path(land));
-                            d3.select(".latest").remove();
+                            d3.select(".tweet.keep").attr("d", path);
+                            d3.select(".tweet.latest").remove();
                             svg.append("path")
-                                    .attr("d", path(boundsPolygon))
+                                    .attr("d", path(tweetFeature))
+                                    .classed("tweet", true)
                                     .classed("latest", true);
                         };
                     })
@@ -115,7 +126,7 @@
 
         fetchTweetSample();
 
-        setInterval(fetchTweetSample, 2000);
+        setInterval(fetchTweetSample, 5000);
     })
 </script>
 </body>
