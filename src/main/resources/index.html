@@ -61,8 +61,16 @@
                 .attr("d", path(land))
                 .classed("land", true);
 
+        function geohashFromTweet(tweet) {
+            return ngeohash.encode(tweet.location.lat, tweet.location.lon, 3);
+        }
+
         function featureFromTweet(tweet) {
-            var geohash = ngeohash.encode(tweet.location.lat, tweet.location.lon, 3);
+            var geohash = geohashFromTweet(tweet);
+            return featureFromGeohash(geohash);
+        }
+
+        function featureFromGeohash(geohash) {
             var bbox = ngeohash.decode_bbox(geohash);
             var minlat = bbox[0], minlon = bbox[1], maxlat = bbox[2], maxlon = bbox[3];
 
@@ -81,28 +89,38 @@
             };
         }
 
+        function pathFromGeohash(geohash) {
+            return path(featureFromGeohash(geohash));
+        }
+
         function pathFromTweet(tweet) {
             return path(featureFromTweet(tweet));
         }
 
-        var allTweetIds = {};
-        var allTweets = [];
+        var allTweetGeoHashSet = {};
 
         function showTweets(tweets) {
             for(var i = 0; i < tweets.length; i++) {
                 var tweet = tweets[i];
-                if (typeof allTweetIds[tweet.id] === "undefined") {
-                    allTweets.push(tweet);
-                    allTweetIds[tweet.id] = tweet;
+                var geohash = geohashFromTweet(tweet);
+                if (typeof allTweetGeoHashSet[geohash] === "undefined") {
+                    allTweetGeoHashSet[geohash] = tweet;
+                }
+            }
+
+            var allGeoHashes = [];
+            for (var geohash in allTweetGeoHashSet) {
+                if (allTweetGeoHashSet.hasOwnProperty(geohash)) {
+                    allGeoHashes.push(geohash);
                 }
             }
 
             svg.selectAll(".tweet.keep")
-                .data(allTweets, function(tweet) { return tweet.id; })
-                    .attr("d", pathFromTweet)
+                .data(allGeoHashes)
+                    .attr("d", pathFromGeohash)
                 .enter()
                     .append("path")
-                    .attr("d", pathFromTweet)
+                    .attr("d", pathFromGeohash)
                     .classed("tweet", true)
                     .classed("keep", true);
 
@@ -125,7 +143,7 @@
                             projection.rotate(r(t));
                             d3.select(".graticule").attr("d", path);
                             d3.select(".land").attr("d", path(land));
-                            d3.selectAll(".tweet.keep").attr("d", pathFromTweet);
+                            d3.selectAll(".tweet.keep").attr("d", pathFromGeohash);
 
                             d3.select(".tweet.latest").remove();
                             svg.append("path")
