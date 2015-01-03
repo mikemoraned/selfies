@@ -9,7 +9,7 @@ case class TweetSample() {
   var possibleSample : Option[Seq[Status]] = None
 
   def newWindow(window: RDD[(Long, Status)]) : Unit = {
-    possibleSample = Some(window.takeSample(true, 10).map{ case (_, status) => status })
+    possibleSample = Some(window.takeSample(true, 1000).map{ case (_, status) => status })
   }
 
   def toJSON() : JValue = {
