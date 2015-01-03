@@ -25,15 +25,34 @@
             fill: red;
             stroke: #777;
         }
+
+        svg {
+            float: left;
+        }
+
+        #tweet_container {
+            float: left;
+        }
     </style>
 </head>
 <body>
 
 <svg width="840" height="800">
 </svg>
+
+<div id="tweet_container"></div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js" charset="utf-8"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
 <script src="ngeohash.js"></script>
+<script>window.twttr = (function (d, s, id) {
+    var t, js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src= "https://platform.twitter.com/widgets.js";
+    fjs.parentNode.insertBefore(js, fjs);
+    return window.twttr || (t = { _e: [], ready: function (f) { t._e.push(f) } });
+}(document, "script", "twitter-wjs"));</script>
 
 <script>
     var ngeohash = require('ngeohash');
@@ -104,6 +123,10 @@
                     .each("start", function () {
                         console.log("start");
                         d3.select(".tweet.latest").remove();
+                        if (window.twttr && twttr.widgets && twttr.widgets.createTweet) {
+                            d3.selectAll("#tweet_container *").remove();
+                            twttr.widgets.createTweet(tweet.id, document.getElementById('tweet_container'));
+                        }
                     })
                     .tween("rotate", function () {
                         var p = d3.geo.centroid(tweetFeature),
