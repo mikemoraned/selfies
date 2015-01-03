@@ -4,9 +4,10 @@ import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
 
 import org.eclipse.jetty.server.Request
 import org.eclipse.jetty.server.handler.AbstractHandler
+import org.json4s.JValue
 import org.json4s.native.JsonMethods._
 
-class TweetSampleHandler(sample: TweetSample) extends AbstractHandler {
+class TweetSampleHandler(sample: { def toJSON() : JValue}) extends AbstractHandler {
    override def handle(target: String, baseRequest: Request,
                        request: HttpServletRequest, response: HttpServletResponse): Unit =
    {
