@@ -117,10 +117,13 @@
             return tweets[i];
         }
 
-//        var lastChosenTweetId = -1;
+        var lastChosenTweetId = -1;
         function showTweetSample(tweets) {
             var tweet = chooseRandom(tweets);
-
+            while (tweet.id === lastChosenTweetId) {
+                tweet = chooseRandom(tweets);
+            }
+            lastChosenTweetId = tweet.id;
 
             var tweetFeature = featureFromTweet(tweet);
 
