@@ -7,16 +7,21 @@ import org.eclipse.jetty.server.handler.AbstractHandler
 import org.json4s.JValue
 import org.json4s.native.JsonMethods._
 
-class TweetSampleHandler(sample: { def toJSON() : JValue}) extends AbstractHandler {
-   override def handle(target: String, baseRequest: Request,
+class TweetSampleHandler(contentMap: Map[String, {def toJSON() : JValue}]) extends AbstractHandler {
+  val targetToContentMap = contentMap.map{ case (name, value) => (s"/api/$name", value) }
+
+  override def handle(target: String, baseRequest: Request,
                        request: HttpServletRequest, response: HttpServletResponse): Unit =
    {
-     if (target == "/api/sample") {
-       response.setContentType("application/json; charset=utf-8")
-       response.setStatus(HttpServletResponse.SC_OK)
-       response.getWriter().print(pretty(render(sample.toJSON())))
+     targetToContentMap.get(target) match {
+      case Some(content) => {
+        response.setContentType("application/json; charset=utf-8")
+        response.setStatus(HttpServletResponse.SC_OK)
+        response.getWriter().print(pretty(render(content.toJSON())))
 
-       baseRequest.setHandled(true);
-     }
+        baseRequest.setHandled(true);
+      }
+      case None => {}
+    }
    }
  }
