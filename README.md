@@ -6,7 +6,7 @@ This shows recent and historic tweets with a location.
 It is just a minimal real application to allow me to play about with [Spark][spark] and [d3 geo][d3.geo] libraries, using 
 [Twitter data][twitter-sample] as input.
 
-In case it doesn't work for you, here's what it looks like when running: http://youtu.be/YBcCXdYFYTw
+In case [the website](http://zeitgeist.houseofmoran.com/) doesn't work for you, here's what it looks like when running: http://youtu.be/YBcCXdYFYTw
 
 <iframe width="420" height="315" src="//www.youtube.com/embed/YBcCXdYFYTw" frameborder="0" allowfullscreen></iframe>
 
