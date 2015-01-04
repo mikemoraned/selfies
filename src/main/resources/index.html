@@ -122,21 +122,13 @@
                 return path(featureFromGeohash(geohash));
             }
 
-            var lastChosenTweetId = -1;
-
             function showTweetSample(tweets) {
                 var tweet = chooseRandom(tweets);
-                while (tweet.id === lastChosenTweetId && tweets.length > 1) {
-                    tweet = chooseRandom(tweets);
-                }
-                lastChosenTweetId = tweet.id;
-
                 var tweetFeature = featureFromTweet(tweet);
 
                 d3.transition()
                         .duration(2000)
                         .each("start", function () {
-                            console.log("start");
                             d3.select(".tweet.latest").remove();
                             if (window.twttr && twttr.widgets && twttr.widgets.createTweet) {
                                 d3.selectAll("#tweet_container *").remove();
