@@ -122,7 +122,7 @@
         var lastChosenTweetId = -1;
         function showTweetSample(tweets) {
             var tweet = chooseRandom(tweets);
-            while (tweet.id === lastChosenTweetId) {
+            while (tweet.id === lastChosenTweetId && tweets.length > 1) {
                 tweet = chooseRandom(tweets);
             }
             lastChosenTweetId = tweet.id;
