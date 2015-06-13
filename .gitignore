@@ -1,8 +1,11 @@
 target/
 oauth.properties
+*oauth.properties
 checkpoint/
 .idea/workspace.xml
 .idea/dictionaries/
 firehose-geo-oauth.properties
 geotweets
 firehose-geo-dev-oauth.properties
+
+*~
