@@ -9,13 +9,13 @@ case class TweetSample() extends Snapshotable {
   var possibleSample : Option[Seq[Status]] = None
 
   def newWindow(window: RDD[(Long, Status)]) : Unit = {
-    possibleSample = Some(window.takeSample(true, 1000).map{ case (_, status) => status })
+    possibleSample = Some(window.map{ case (_, status) => status }.collect())
   }
 
   def toJSON() : JValue = {
     possibleSample match {
       case Some(sample) => {
-        for (status : Status <- sample if status.getGeoLocation() != null)
+        for (status : Status <- sample)
           yield toJSON(status)
       }
       case None => List()
@@ -23,9 +23,10 @@ case class TweetSample() extends Snapshotable {
   }
 
   private def toJSON(status: Status) : JValue = {
-    ("id" -> status.getId().toString) ~
-    ("location" ->
-        ("lat" -> status.getGeoLocation.getLatitude) ~
-        ("lon" -> status.getGeoLocation.getLongitude))
+    val id = status.getId().toString
+    val user = status.getUser().getId
+    ("id" -> id) ~
+    ("user" -> user) ~
+    ("url" -> s"https://twitter.com/${user}/status/${id}")
   }
 }

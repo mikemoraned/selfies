@@ -34,20 +34,19 @@ object TwitterVisApp {
       }
 
     val sample = new TweetSample
-    val geoHistory = new GeoHistory
 
     val sampleHandler = new SnapshotHandler(Map(
-      ("sample" -> sample), ("geohistory" -> geoHistory)))
+      ("sample" -> sample)))
 
-    val geoStatuses = twitterStream.
-      filter(status => status.getGeoLocation() != null)
+    val selfieStatuses = twitterStream.
+      filter(status => {
+        status.getText().toLowerCase().contains("selfie")
+      })
 
-    geoStatuses.map(status => (status.getId, status)).
-      foreachRDD( rdd => sample.newWindow(rdd) )
-
-    geoStatuses.map(status => (toGeoHash(status.getGeoLocation(), 3), 1)).
-      reduceByKey(_ + _).
-      foreachRDD( rdd => geoHistory.newCounts(rdd) )
+    selfieStatuses.map(status => (status.getId, status)).
+      foreachRDD( rdd => {
+        sample.newWindow(rdd)
+      } )
 
     val server = new Server(Properties.envOrElse("PORT", "8080").toInt)
 
