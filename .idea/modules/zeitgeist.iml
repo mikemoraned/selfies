@@ -16,9 +16,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../src/test/resources" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/../../target/scala-2.11/resource_managed/test" type="java-test-resource" />
       <excludeFolder url="file://$MODULE_DIR$/../../target/resolution-cache" />
-      <excludeFolder url="file://$MODULE_DIR$/../../target/scala-2.10" />
       <excludeFolder url="file://$MODULE_DIR$/../../target/streams" />
-      <excludeFolder url="file://$MODULE_DIR$/../../target/universal" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -36,8 +34,6 @@
     <orderEntry type="library" name="SBT: com.fasterxml.jackson.core:jackson-core:2.3.1:jar" level="project" />
     <orderEntry type="library" name="SBT: com.fasterxml.jackson.core:jackson-databind:2.3.1:jar" level="project" />
     <orderEntry type="library" name="SBT: com.github.nscala-time:nscala-time_2.11:1.6.0:jar" level="project" />
-    <orderEntry type="library" name="SBT: com.google.code.findbugs:jsr305:2.0.1:jar" level="project" />
-    <orderEntry type="library" name="SBT: com.google.guava:guava:16.0.1:jar" level="project" />
     <orderEntry type="library" name="SBT: com.google.inject:guice:3.0:jar" level="project" />
     <orderEntry type="library" name="SBT: com.google.protobuf:protobuf-java:2.5.0:jar" level="project" />
     <orderEntry type="library" name="SBT: com.ning:compress-lzf:1.0.0:jar" level="project" />
@@ -49,8 +45,6 @@
     <orderEntry type="library" name="SBT: com.thoughtworks.paranamer:paranamer:2.6:jar" level="project" />
     <orderEntry type="library" name="SBT: com.twitter:chill-java:0.5.0:jar" level="project" />
     <orderEntry type="library" name="SBT: com.twitter:chill_2.11:0.5.0:jar" level="project" />
-    <orderEntry type="library" name="SBT: com.twitter:finagle-core_2.10:6.18.0:jar" level="project" />
-    <orderEntry type="library" name="SBT: com.twitter:finagle-http_2.10:6.18.0:jar" level="project" />
     <orderEntry type="library" name="SBT: com.twitter:parquet-column:1.6.0rc3:jar" level="project" />
     <orderEntry type="library" name="SBT: com.twitter:parquet-common:1.6.0rc3:jar" level="project" />
     <orderEntry type="library" name="SBT: com.twitter:parquet-encoding:1.6.0rc3:jar" level="project" />
@@ -58,27 +52,17 @@
     <orderEntry type="library" name="SBT: com.twitter:parquet-generator:1.6.0rc3:jar" level="project" />
     <orderEntry type="library" name="SBT: com.twitter:parquet-hadoop:1.6.0rc3:jar" level="project" />
     <orderEntry type="library" name="SBT: com.twitter:parquet-jackson:1.6.0rc3:jar" level="project" />
-    <orderEntry type="library" name="SBT: com.twitter:util-app_2.10:6.18.0:jar" level="project" />
-    <orderEntry type="library" name="SBT: com.twitter:util-codec_2.10:6.18.0:jar" level="project" />
-    <orderEntry type="library" name="SBT: com.twitter:util-collection_2.10:6.18.0:jar" level="project" />
-    <orderEntry type="library" name="SBT: com.twitter:util-core_2.10:6.18.0:jar" level="project" />
-    <orderEntry type="library" name="SBT: com.twitter:util-hashing_2.10:6.18.0:jar" level="project" />
-    <orderEntry type="library" name="SBT: com.twitter:util-jvm_2.10:6.18.0:jar" level="project" />
-    <orderEntry type="library" name="SBT: com.twitter:util-logging_2.10:6.18.0:jar" level="project" />
     <orderEntry type="library" name="SBT: com.typesafe:config:1.2.1:jar" level="project" />
     <orderEntry type="library" name="SBT: commons-beanutils:commons-beanutils:1.7.0:jar" level="project" />
     <orderEntry type="library" name="SBT: commons-beanutils:commons-beanutils-core:1.8.0:jar" level="project" />
     <orderEntry type="library" name="SBT: commons-cli:commons-cli:1.2:jar" level="project" />
-    <orderEntry type="library" name="SBT: commons-codec:commons-codec:1.6:jar" level="project" />
     <orderEntry type="library" name="SBT: commons-collections:commons-collections:3.2.1:jar" level="project" />
     <orderEntry type="library" name="SBT: commons-configuration:commons-configuration:1.6:jar" level="project" />
     <orderEntry type="library" name="SBT: commons-digester:commons-digester:1.8:jar" level="project" />
     <orderEntry type="library" name="SBT: commons-httpclient:commons-httpclient:3.1:jar" level="project" />
     <orderEntry type="library" name="SBT: commons-io:commons-io:2.4:jar" level="project" />
-    <orderEntry type="library" name="SBT: commons-lang:commons-lang:2.6:jar" level="project" />
     <orderEntry type="library" name="SBT: commons-logging:commons-logging:1.1.1:jar" level="project" />
     <orderEntry type="library" name="SBT: commons-net:commons-net:2.2:jar" level="project" />
-    <orderEntry type="library" name="SBT: io.netty:netty:3.9.1.Final:jar" level="project" />
     <orderEntry type="library" name="SBT: io.netty:netty-all:4.0.23.Final:jar" level="project" />
     <orderEntry type="library" name="SBT: javax.activation:activation:1.1:jar" level="project" />
     <orderEntry type="library" name="SBT: javax.inject:javax.inject:1:jar" level="project" />
@@ -136,10 +120,6 @@
     <orderEntry type="library" name="SBT: org.eclipse.jetty:jetty-util:8.1.14.v20131031:jar" level="project" />
     <orderEntry type="library" name="SBT: org.eclipse.jetty:jetty-webapp:8.1.14.v20131031:jar" level="project" />
     <orderEntry type="library" name="SBT: org.eclipse.jetty:jetty-xml:8.1.14.v20131031:jar" level="project" />
-    <orderEntry type="library" name="SBT: org.eclipse.jetty.orbit:javax.activation:1.1.0.v201105071233:orbit" level="project" />
-    <orderEntry type="library" name="SBT: org.eclipse.jetty.orbit:javax.mail.glassfish:1.4.1.v201005082020:orbit" level="project" />
-    <orderEntry type="library" name="SBT: org.eclipse.jetty.orbit:javax.servlet:3.0.0.v201112011016:orbit" level="project" />
-    <orderEntry type="library" name="SBT: org.eclipse.jetty.orbit:javax.transaction:1.1.1.v201105210645:orbit" level="project" />
     <orderEntry type="library" name="SBT: org.joda:joda-convert:1.2:jar" level="project" />
     <orderEntry type="library" name="SBT: org.json4s:json4s-ast_2.11:3.2.10:jar" level="project" />
     <orderEntry type="library" name="SBT: org.json4s:json4s-core_2.11:3.2.10:jar" level="project" />
@@ -173,7 +153,6 @@
     <orderEntry type="library" name="SBT: org.twitter4j:twitter4j-stream:3.0.3:jar" level="project" />
     <orderEntry type="library" name="SBT: org.uncommons.maths:uncommons-maths:1.2.2a:jar" level="project" />
     <orderEntry type="library" name="SBT: org.xerial.snappy:snappy-java:1.1.1.6:jar" level="project" />
-    <orderEntry type="library" name="SBT: postgresql:postgresql:9.0-801.jdbc4:jar" level="project" />
     <orderEntry type="library" name="SBT: stax:stax-api:1.0.1:jar" level="project" />
     <orderEntry type="library" name="SBT: xmlenc:xmlenc:0.52:jar" level="project" />
     <orderEntry type="library" name="SBT: com.google.code.findbugs:jsr305:1.3.9:jar" level="project" />
@@ -183,5 +162,22 @@
     <orderEntry type="library" name="SBT: io.netty:netty:3.8.0.Final:jar" level="project" />
     <orderEntry type="library" name="SBT: org.json4s:json4s-native_2.11:3.2.10:jar" level="project" />
     <orderEntry type="library" name="SBT: ch.hsr:geohash:1.0.10:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.eclipse.jetty.orbit:javax.activation:1.1.0.v201105071233:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.eclipse.jetty.orbit:javax.mail.glassfish:1.4.1.v201005082020:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.eclipse.jetty.orbit:javax.servlet:3.0.0.v201112011016:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.eclipse.jetty.orbit:javax.transaction:1.1.1.v201105210645:jar" level="project" />
+    <orderEntry type="module-library">
+      <library name="SBT: unmanaged-sources-and-docs">
+        <CLASSES />
+        <JAVADOC>
+          <root url="jar://$USER_HOME$/.ivy2/cache/com.esotericsoftware.reflectasm/reflectasm/docs/reflectasm-1.07-javadoc.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/org.apache.mesos/mesos/docs/mesos-0.18.1-javadoc.jar!/" />
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.ivy2/cache/com.esotericsoftware.reflectasm/reflectasm/srcs/reflectasm-1.07-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/org.apache.mesos/mesos/srcs/mesos-0.18.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
   </component>
 </module>
