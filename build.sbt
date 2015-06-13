@@ -2,7 +2,7 @@ import NativePackagerKeys._
 
 packageArchetype.java_application
 
-name := """zeitgeist"""
+name := """selfies"""
 
 version := "1.0"
 
