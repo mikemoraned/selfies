@@ -40,11 +40,15 @@ object TwitterVisApp {
 
     val selfieStatuses = twitterStream.
       filter(status => {
-        status.getText().toLowerCase().contains("selfie")
-      })
+        status.getText().toLowerCase().contains("selfie") &&
+        status.getMediaEntities().length > 0
+      }).
+      window(Minutes(1), Seconds(10))
 
     selfieStatuses.map(status => (status.getId, status)).
       foreachRDD( rdd => {
+        println("RDD:")
+        rdd.foreach(println)
         sample.newWindow(rdd)
       } )
 
