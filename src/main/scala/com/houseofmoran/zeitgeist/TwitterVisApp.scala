@@ -43,7 +43,7 @@ object TwitterVisApp {
         status.getText().toLowerCase().contains("selfie") &&
         status.getMediaEntities().length > 0
       }).
-      window(Minutes(1), Seconds(10))
+      window(Minutes(20), Minutes(1))
 
     selfieStatuses.map(status => (status.getId, status)).
       foreachRDD( rdd => {
