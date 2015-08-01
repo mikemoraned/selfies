@@ -9,3 +9,4 @@ geotweets
 firehose-geo-dev-oauth.properties
 
 *~
+tmp/
