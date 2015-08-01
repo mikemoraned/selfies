@@ -14,7 +14,11 @@ mainClass in Compile := Some("com.houseofmoran.zeitgeist.TwitterVisApp")
 fork := true
 
 scalaVersion := "2.11.4"
-  
+
+resolvers += "OpenIMAJ maven releases repository" at "http://maven.openimaj.org"
+
+resolvers += "OpenIMAJ maven snapshots repository" at "http://snapshots.openimaj.org"
+
 libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-core" % "1.4.0",
   "org.apache.spark" %% "spark-sql" % "1.4.0",
@@ -28,6 +32,14 @@ libraryDependencies ++= Seq(
   "org.eclipse.jetty" % "jetty-server" % "9.2.6.v20141205",
   "org.json4s" %% "json4s-native" % "3.2.10",
   "ch.hsr" % "geohash" % "1.0.10")
+
+libraryDependencies += "com.twelvemonkeys.common" % "common-lang" % "3.0.2"
+
+libraryDependencies += "com.twelvemonkeys.imageio" % "imageio-core" % "3.0.2"
+
+libraryDependencies += "org.openimaj" % "image-processing" % "1.3.1"
+
+libraryDependencies += "org.openimaj" % "faces" % "1.3.1"
 
 libraryDependencies ++= Seq(
   "org.scalatest" % "scalatest_2.11" % "2.2.1" % "test")

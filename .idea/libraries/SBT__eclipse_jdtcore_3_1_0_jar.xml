@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="SBT: eclipse:jdtcore:3.1.0:jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/eclipse/jdtcore/jars/jdtcore-3.1.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

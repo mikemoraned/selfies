@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="SBT: jama:jama:1.0.2:jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/jama/jama/jars/jama-1.0.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

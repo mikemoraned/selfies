@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="SBT: net.sf.jafama:JaFaMa:1.2:jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/net.sf.jafama/JaFaMa/jars/JaFaMa-1.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

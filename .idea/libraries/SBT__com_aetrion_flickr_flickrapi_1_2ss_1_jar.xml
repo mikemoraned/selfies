@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="SBT: com.aetrion.flickr:flickrapi:1.2ss.1:jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/com.aetrion.flickr/flickrapi/jars/flickrapi-1.2ss.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

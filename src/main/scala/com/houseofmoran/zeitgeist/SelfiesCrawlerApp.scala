@@ -30,8 +30,7 @@ object SelfiesCrawlerApp {
 
     val selfieStatuses = twitterStream.
       filter(status => {
-        status.getText().toLowerCase().contains("selfie")
-
+        status.getMediaEntities != null && status.getMediaEntities().length > 0
       })
       .window(Minutes(1), Minutes(1))
 
@@ -48,7 +47,7 @@ object SelfiesCrawlerApp {
             mediaEntities.map(e => e.getMediaURL).mkString(",")
         (id, url, entitiesUrls)
       })
-      .saveAsTextFiles("statusesWithUrls")
+      .saveAsTextFiles("withMedia-statusesWithUrls")
 
     ssc.start()
     ssc.awaitTermination()

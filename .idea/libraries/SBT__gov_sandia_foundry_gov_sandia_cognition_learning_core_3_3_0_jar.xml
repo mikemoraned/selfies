@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="SBT: gov.sandia.foundry:gov-sandia-cognition-learning-core:3.3.0:jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/gov.sandia.foundry/gov-sandia-cognition-learning-core/jars/gov-sandia-cognition-learning-core-3.3.0.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.ivy2/cache/gov.sandia.foundry/gov-sandia-cognition-learning-core/docs/gov-sandia-cognition-learning-core-3.3.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/gov.sandia.foundry/gov-sandia-cognition-learning-core/srcs/gov-sandia-cognition-learning-core-3.3.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
