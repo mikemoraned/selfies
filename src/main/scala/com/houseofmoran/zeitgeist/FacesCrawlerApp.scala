@@ -5,7 +5,7 @@ import java.net.URL
 import javax.imageio.ImageIO
 
 import org.openimaj.image.ImageUtilities
-import org.openimaj.image.processing.face.detection.HaarCascadeDetector
+import org.openimaj.image.processing.face.detection.{DetectedFace, HaarCascadeDetector}
 
 import scala.collection.JavaConversions._
 
@@ -16,8 +16,8 @@ import twitter4j.MediaEntity
 
 object FacesCrawlerApp {
 
-  def hasFaces(entities: Array[MediaEntity]): Boolean = {
-    entities.exists(entity => {
+  def detectFaces(entities: Array[MediaEntity]): Map[URL,List[DetectedFace]] = {
+    entities.foldLeft(Map[URL,List[DetectedFace]]())((map, entity) => {
       val url = new URL(entity.getMediaURL)
       try {
         val bufferedImg = ImageIO.read(url)
@@ -25,11 +25,12 @@ object FacesCrawlerApp {
         val img = ImageUtilities.createFImage(bufferedImg)
 
         val detector = new HaarCascadeDetector()
-        detector.detectFaces(img).length > 0
+
+        return map.updated(url, detector.detectFaces(img).toList)
       }
       catch {
         case e: IOException => {
-          return false
+          return map
         }
       }
     })
@@ -56,7 +57,7 @@ object FacesCrawlerApp {
         val mediaEntities = status.getMediaEntities
         mediaEntities != null &&
           mediaEntities.length > 0 &&
-          hasFaces(mediaEntities)
+          !detectFaces(mediaEntities).isEmpty
       })
       .window(Minutes(1), Minutes(1))
 
