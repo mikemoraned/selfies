@@ -63,7 +63,7 @@ object FacesCrawlerApp {
     selfieStatuses
       .map(status => {
         val id = status.getId().toString
-        val user = status.getUser().getId
+        val user = status.getUser().getScreenName()
         val url = s"https://twitter.com/${user}/status/${id}"
         val mediaEntities = status.getMediaEntities
         val entitiesUrls =
