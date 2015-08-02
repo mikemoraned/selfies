@@ -7,7 +7,7 @@ import java.io.IOException
 import java.net.URL
 import javax.imageio.ImageIO
 
-import com.houseofmoran.selfies.faces.{Left, Middle, Right, VerticalSegment}
+import com.houseofmoran.selfies.faces._
 import org.openimaj.image.ImageUtilities
 import org.openimaj.image.processing.face.detection.{DetectedFace, HaarCascadeDetector}
 
@@ -29,6 +29,11 @@ object FacesCrawlerApp {
     def toVerticalSegment : VerticalSegment = {
       val centroid = normalizedCentroid
       VerticalSegment.classify(centroid.getX)
+    }
+
+    def toHorizontalSegment : HorizontalSegment = {
+      val centroid = normalizedCentroid
+      HorizontalSegment.classify(centroid.getY)
     }
   }
 
@@ -63,20 +68,45 @@ object FacesCrawlerApp {
   def toVerticalFacePresence(faces: Seq[DetectedFaceInContext]) : VerticalFacePresence = {
     val segmented = faces.groupBy(face => face.toVerticalSegment)
     VerticalFacePresence(
-      segmented.get(Left),
-      segmented.get(Middle),
-      segmented.get(Right))
+      segmented.get(LeftVertical),
+      segmented.get(MiddleVertical),
+      segmented.get(RightVertical))
+  }
+
+  case class HorizontalFacePresence(top: Option[Seq[DetectedFaceInContext]],
+                                    middle: Option[Seq[DetectedFaceInContext]],
+                                    bottom: Option[Seq[DetectedFaceInContext]])
+
+  def toHorizontalFacePresence(faces: Seq[DetectedFaceInContext]) : HorizontalFacePresence = {
+    val segmented = faces.groupBy(face => face.toHorizontalSegment)
+    HorizontalFacePresence(
+      segmented.get(TopHorizontal),
+      segmented.get(MiddleHorizontal),
+      segmented.get(BottomHorizontal))
+  }
+
+  def faceOnLeftOrRightOnly(faces: Seq[DetectedFaceInContext]) = {
+    val facePresence = toVerticalFacePresence(faces)
+
+    facePresence match {
+      case VerticalFacePresence(Some(_), None, None) => true
+      case VerticalFacePresence(None, None, Some(_)) => true
+      case _ => false
+    }
+  }
+
+  def faceInMiddleOrBottomOnly(faces: Seq[DetectedFaceInContext]) = {
+    val facePresence = toHorizontalFacePresence(faces)
+
+    facePresence match {
+      case HorizontalFacePresence(Some(_), _, _) => false
+      case _ => true
+    }
   }
 
   def filterFaces(urlToFaces: Map[URL, Seq[DetectedFaceInContext]]) = {
     urlToFaces.filter{case (url, faces) => {
-      val facePresence = toVerticalFacePresence(faces)
-
-      facePresence match {
-        case VerticalFacePresence(Some(_), None, None) => true
-        case VerticalFacePresence(None, None, Some(_)) => true
-        case _ => false
-      }
+      faceOnLeftOrRightOnly(faces) && faceInMiddleOrBottomOnly(faces)
     }}
   }
 
@@ -122,7 +152,7 @@ object FacesCrawlerApp {
             mediaEntities.map(e => e.getMediaURL).mkString(",")
         (id, url, entitiesUrls)
       })
-      .saveAsTextFiles("withMediaAndFacesOnOneSide-statusesWithUrls")
+      .saveAsTextFiles("withMediaAndFacesOnOneSideAnoNotTop-statusesWithUrls")
 
     ssc.start()
     ssc.awaitTermination()

@@ -10,17 +10,17 @@ object VerticalSegment {
     }
 
     if (x >= 0.0 && x < leftBound) {
-      Left
+      LeftVertical
     }
     else if (x >= leftBound && x < middleBound) {
-      Middle
+      MiddleVertical
     }
     else {
-      Right
+      RightVertical
     }
   }
 }
 sealed class VerticalSegment
-case object Left extends VerticalSegment
-case object Middle extends VerticalSegment
-case object Right extends VerticalSegment
+case object LeftVertical extends VerticalSegment
+case object MiddleVertical extends VerticalSegment
+case object RightVertical extends VerticalSegment
