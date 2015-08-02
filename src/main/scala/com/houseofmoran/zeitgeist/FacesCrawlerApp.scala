@@ -1,9 +1,13 @@
 package com.houseofmoran.zeitgeist
 
+import java.awt.geom.Point2D
+import java.awt.geom.Point2D.Double
+import java.awt.image.BufferedImage
 import java.io.IOException
 import java.net.URL
 import javax.imageio.ImageIO
 
+import com.houseofmoran.selfies.faces.{Left, Middle, Right, VerticalSegment}
 import org.openimaj.image.ImageUtilities
 import org.openimaj.image.processing.face.detection.{DetectedFace, HaarCascadeDetector}
 
@@ -16,8 +20,20 @@ import twitter4j.MediaEntity
 
 object FacesCrawlerApp {
 
-  def detectFaces(entities: Array[MediaEntity]): Map[URL,List[DetectedFace]] = {
-    entities.foldLeft(Map[URL,List[DetectedFace]]())((map, entity) => {
+  case class DetectedFaceInContext(face: DetectedFace, img: BufferedImage) {
+    def normalizedCentroid : Point2D = {
+      val centroid = face.getBounds.calculateCentroid()
+      new Double(centroid.getX / img.getWidth, centroid.getY / img.getHeight())
+    }
+
+    def toVerticalSegment : VerticalSegment = {
+      val centroid = normalizedCentroid
+      VerticalSegment.classify(centroid.getX)
+    }
+  }
+
+  def detectFaces(entities: Array[MediaEntity]): Map[URL,Seq[DetectedFaceInContext]] = {
+    entities.foldLeft(Map[URL,Seq[DetectedFaceInContext]]())((map, entity) => {
       val url = new URL(entity.getMediaURL)
       try {
         val bufferedImg = ImageIO.read(url)
@@ -26,7 +42,11 @@ object FacesCrawlerApp {
 
         val detector = new HaarCascadeDetector()
 
-        return map.updated(url, detector.detectFaces(img).toList)
+        val inContext = detector.detectFaces(img).map(face => {
+          DetectedFaceInContext(face, bufferedImg)
+        })
+
+        return map.updated(url, inContext)
       }
       catch {
         case e: IOException => {
@@ -34,6 +54,30 @@ object FacesCrawlerApp {
         }
       }
     })
+  }
+
+  case class VerticalFacePresence(left: Option[Seq[DetectedFaceInContext]],
+                                  middle: Option[Seq[DetectedFaceInContext]],
+                                  right: Option[Seq[DetectedFaceInContext]])
+
+  def toVerticalFacePresence(faces: Seq[DetectedFaceInContext]) : VerticalFacePresence = {
+    val segmented = faces.groupBy(face => face.toVerticalSegment)
+    VerticalFacePresence(
+      segmented.get(Left),
+      segmented.get(Middle),
+      segmented.get(Right))
+  }
+
+  def filterFaces(urlToFaces: Map[URL, Seq[DetectedFaceInContext]]) = {
+    urlToFaces.filter{case (url, faces) => {
+      val facePresence = toVerticalFacePresence(faces)
+
+      facePresence match {
+        case VerticalFacePresence(Some(_), None, None) => true
+        case VerticalFacePresence(None, None, Some(_)) => true
+        case _ => false
+      }
+    }}
   }
 
   def main(args: Array[String]): Unit = {
@@ -55,9 +99,13 @@ object FacesCrawlerApp {
     val selfieStatuses = twitterStream.
       filter(status => {
         val mediaEntities = status.getMediaEntities
-        mediaEntities != null &&
-          mediaEntities.length > 0 &&
-          !detectFaces(mediaEntities).isEmpty
+        val detectedFaces =
+          if (mediaEntities != null)
+            detectFaces(mediaEntities)
+          else
+            Map[URL,List[DetectedFaceInContext]]()
+
+        !filterFaces(detectedFaces).isEmpty
       })
       .window(Minutes(1), Minutes(1))
 
@@ -74,7 +122,7 @@ object FacesCrawlerApp {
             mediaEntities.map(e => e.getMediaURL).mkString(",")
         (id, url, entitiesUrls)
       })
-      .saveAsTextFiles("withMediaAndFaces-statusesWithUrls")
+      .saveAsTextFiles("withMediaAndFacesOnOneSide-statusesWithUrls")
 
     ssc.start()
     ssc.awaitTermination()
