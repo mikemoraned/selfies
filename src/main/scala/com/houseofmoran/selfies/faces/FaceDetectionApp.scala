@@ -12,6 +12,7 @@ import org.openimaj.image.processing.face.util.{KEDetectedFaceRenderer, CLMDetec
 
 object FaceDetectionApp {
   def main(args: Array[String]): Unit = {
+
     val bufferedImg = ImageIO.read(new File(args(0)))
     val img = ImageUtilities.createFImage(bufferedImg)
 
