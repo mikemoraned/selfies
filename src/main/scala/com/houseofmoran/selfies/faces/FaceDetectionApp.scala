@@ -11,9 +11,9 @@ import org.openimaj.image.processing.face.detection.{DetectedFace, CLMFaceDetect
 import org.openimaj.image.processing.face.util.{KEDetectedFaceRenderer, CLMDetectedFaceRenderer, SimpleDetectedFaceRenderer}
 
 object FaceDetectionApp {
-  def main(args: Array[String]): Unit = {
 
-    val bufferedImg = ImageIO.read(new File(args(0)))
+  def showFaces(in: File, out: File) = {
+    val bufferedImg = ImageIO.read(in)
     val img = ImageUtilities.createFImage(bufferedImg)
 
     val mbf = ImageUtilities.createMBFImage(bufferedImg, false)
@@ -26,6 +26,24 @@ object FaceDetectionApp {
         .drawDetectedFace(mbf, 10, face)
     }
 
-    ImageUtilities.write(mbf, new File(args(1)))
+    ImageUtilities.write(mbf, out)
+  }
+
+  def main(args: Array[String]): Unit = {
+
+    val dirName = new File(args(0))
+    val ImageFiles = "(.+)\\.(...)$".r
+    for (in <- dirName.listFiles() if in.isFile && !in.getName.contains("faces")) {
+      in.getPath match {
+        case ImageFiles(base, ext) => {
+          val out = new File(s"${base}.faces.${ext}")
+          println(s"${in} -> ${out}")
+          showFaces(in, out)
+        }
+        case _ => {
+          println(s"ignoring ${in}")
+        }
+      }
+    }
   }
 }
