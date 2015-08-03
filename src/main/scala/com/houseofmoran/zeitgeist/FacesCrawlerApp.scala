@@ -85,28 +85,28 @@ object FacesCrawlerApp {
       segmented.get(BottomHorizontal))
   }
 
-  def faceOnLeftOrRightOnly(faces: Seq[DetectedFaceInContext]) = {
+  def singleFaceOnLeftOrRightOnly(faces: Seq[DetectedFaceInContext]) = {
     val facePresence = toVerticalFacePresence(faces)
 
     facePresence match {
-      case VerticalFacePresence(Some(_), None, None) => true
-      case VerticalFacePresence(None, None, Some(_)) => true
+      case VerticalFacePresence(Some(faces), None, None) => faces.length == 1
+      case VerticalFacePresence(None, None, Some(faces)) => faces.length == 1
       case _ => false
     }
   }
 
-  def faceInMiddleOrBottomOnly(faces: Seq[DetectedFaceInContext]) = {
+  def faceInBottomOnly(faces: Seq[DetectedFaceInContext]) = {
     val facePresence = toHorizontalFacePresence(faces)
 
     facePresence match {
-      case HorizontalFacePresence(Some(_), _, _) => false
-      case _ => true
+      case HorizontalFacePresence(None, None, Some(_)) => true
+      case _ => false
     }
   }
 
   def filterFaces(urlToFaces: Map[URL, Seq[DetectedFaceInContext]]) = {
     urlToFaces.filter{case (url, faces) => {
-      faceOnLeftOrRightOnly(faces) && faceInMiddleOrBottomOnly(faces)
+      singleFaceOnLeftOrRightOnly(faces) && faceInBottomOnly(faces)
     }}
   }
 
@@ -152,7 +152,7 @@ object FacesCrawlerApp {
             mediaEntities.map(e => e.getMediaURL).mkString(",")
         (id, url, entitiesUrls)
       })
-      .saveAsTextFiles("withMediaAndFacesOnOneSideAnoNotTop-statusesWithUrls")
+      .saveAsTextFiles("withMediaAndSingleFaceOnOneSideAndOnBottom-statusesWithUrls")
 
     ssc.start()
     ssc.awaitTermination()
