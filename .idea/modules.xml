@@ -4,8 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/selfies.iml" filepath="$PROJECT_DIR$/.idea/modules/selfies.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/selfies-build.iml" filepath="$PROJECT_DIR$/.idea/modules/selfies-build.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/zeitgeist.iml" filepath="$PROJECT_DIR$/.idea/modules/zeitgeist.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/zeitgeist-build.iml" filepath="$PROJECT_DIR$/.idea/modules/zeitgeist-build.iml" />
     </modules>
   </component>
 </project>
