@@ -1,12 +1,6 @@
-import NativePackagerKeys._
-
-packageArchetype.java_application
-
 name := """selfies"""
 
 version := "1.0"
-
-mainClass in Compile := Some("com.houseofmoran.zeitgeist.TwitterVisApp")
 
 // needed to run apps, due incompatible versions of scala between sbt and spark
 // see http://stackoverflow.com/a/28616509
