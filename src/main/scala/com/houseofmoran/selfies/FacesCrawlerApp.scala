@@ -1,4 +1,4 @@
-package com.houseofmoran.zeitgeist
+package com.houseofmoran.selfies
 
 import java.awt.geom.Point2D
 import java.awt.geom.Point2D.Double
@@ -8,15 +8,14 @@ import java.net.URL
 import javax.imageio.ImageIO
 
 import com.houseofmoran.selfies.faces._
-import org.openimaj.image.ImageUtilities
-import org.openimaj.image.processing.face.detection.{DetectedFace, HaarCascadeDetector}
-
-import scala.collection.JavaConversions._
-
 import com.houseofmoran.spark.twitter.TwitterStreamSource
 import org.apache.spark._
 import org.apache.spark.streaming._
+import org.openimaj.image.ImageUtilities
+import org.openimaj.image.processing.face.detection.{DetectedFace, HaarCascadeDetector}
 import twitter4j.MediaEntity
+
+import scala.collection.JavaConversions._
 
 object FacesCrawlerApp {
 

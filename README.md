@@ -22,4 +22,4 @@ You'll need a set of credentials for talking to twitter, see oauth.properties-te
 
 Once you have an "oauth.properties" file, you can run the crawler:
 
-    sbt "run-main com.houseofmoran.zeitgeist.FacesCrawlerApp oauth.properties"
+    sbt "run-main com.houseofmoran.selfies.FacesCrawlerApp oauth.properties"
