@@ -8,12 +8,12 @@ compiling
 
 You must have sbt installed. Assuming so:
 
-  sbt compile
+    sbt compile
 
 You may see some errors like the following below; they can be ignored as they don't seem to break anything
 
-  [warn] circular dependency found: org.apache.xmlgraphics#batik-svg-dom;1.7->org.apache.xmlgraphics#batik-anim;1.7->...
-  [warn] circular dependency found: org.apache.xmlgraphics#batik-anim;1.7->org.apache.xmlgraphics#batik-svg-dom;1.7->...
+    [warn] circular dependency found: org.apache.xmlgraphics#batik-svg-dom;1.7->org.apache.xmlgraphics#batik-anim;1.7->...
+    [warn] circular dependency found: org.apache.xmlgraphics#batik-anim;1.7->org.apache.xmlgraphics#batik-svg-dom;1.7->...
 
 running
 =======
@@ -22,4 +22,4 @@ You'll need a set of credentials for talking to twitter, see oauth.properties-te
 
 Once you have an "oauth.properties" file, you can run the crawler:
 
-  sbt "run-main com.houseofmoran.zeitgeist.FacesCrawlerApp oauth.properties"
+    sbt "run-main com.houseofmoran.zeitgeist.FacesCrawlerApp oauth.properties"
