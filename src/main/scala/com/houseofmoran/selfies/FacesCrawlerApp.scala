@@ -151,7 +151,7 @@ object FacesCrawlerApp {
             mediaEntities.map(e => e.getMediaURL).mkString(",")
         (id, url, entitiesUrls)
       })
-      .saveAsTextFiles("withMediaAndSingleFaceOnOneSideAndOnBottom-statusesWithUrls")
+      .saveAsTextFiles("tmp/withMediaAndSingleFaceOnOneSideAndOnBottom-statusesWithUrls")
 
     ssc.start()
     ssc.awaitTermination()
