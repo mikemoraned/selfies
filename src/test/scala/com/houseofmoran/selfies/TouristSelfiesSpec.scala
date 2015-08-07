@@ -2,14 +2,19 @@ package com.houseofmoran.selfies
 
 import java.awt.image.BufferedImage
 import java.io.File
+import javax.imageio.ImageIO
 
+import com.houseofmoran.selfies.faces.Faces
+import com.houseofmoran.selfies.tourist.TouristSelfie
 import org.scalatest._
 
-class TouristSelfiesSpec extends FunSuite {
+class TouristSelfiesSpec extends FunSuite with Assertions {
 
   for((fileName, image) <- imagesInDir(new File("examples/good"))) {
     test(s"${fileName} should contain tourist selfies") {
-      assert(1 === 2)
+      val faces = Faces.detectIn(image)
+      assume(!faces.isEmpty)
+      assert(TouristSelfie(faces))
     }
   }
 
@@ -20,7 +25,5 @@ class TouristSelfiesSpec extends FunSuite {
       if !base.contains("faces")
     } yield (in.asFile.getName, loadImage(in.asFile))
 
-  def loadImage(fileName: File) : BufferedImage = {
-    new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB)
-  }
+  def loadImage(file: File) : BufferedImage = ImageIO.read(file)
 }
