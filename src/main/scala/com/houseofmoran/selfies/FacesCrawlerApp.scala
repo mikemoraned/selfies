@@ -7,21 +7,7 @@ import com.houseofmoran.spark.twitter.TwitterStreamSource
 import org.apache.spark._
 import org.apache.spark.streaming._
 
-
-
 object FacesCrawlerApp {
-
-  case class HorizontalFacePresence(top: Option[Seq[DetectedFaceInContext]],
-                                    middle: Option[Seq[DetectedFaceInContext]],
-                                    bottom: Option[Seq[DetectedFaceInContext]])
-
-  def toHorizontalFacePresence(faces: Seq[DetectedFaceInContext]) : HorizontalFacePresence = {
-    val segmented = faces.groupBy(face => face.toHorizontalSegment)
-    HorizontalFacePresence(
-      segmented.get(TopHorizontal),
-      segmented.get(MiddleHorizontal),
-      segmented.get(BottomHorizontal))
-  }
 
   def singleFaceOnLeftOrRightOnly(faces: Seq[DetectedFaceInContext]) = {
     val facePresence = VerticalFacePresence.fromFaces(faces)
@@ -34,7 +20,7 @@ object FacesCrawlerApp {
   }
 
   def faceInBottomOnly(faces: Seq[DetectedFaceInContext]) = {
-    val facePresence = toHorizontalFacePresence(faces)
+    val facePresence = HorizontalFacePresence.fromFaces(faces)
 
     facePresence match {
       case HorizontalFacePresence(None, None, Some(_)) => true
