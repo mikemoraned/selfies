@@ -14,8 +14,11 @@ class TouristSelfiesSpec extends FunSuite {
   }
 
   def imagesInDir(dir: File) =
-    for(fileName <- dir.listFiles())
-      yield (fileName, loadImage(fileName))
+    for {
+      in <- ImageFiles(dir)
+      ImageFile(base, ext) = in
+      if !base.contains("faces")
+    } yield (in.asFile.getName, loadImage(in.asFile))
 
   def loadImage(fileName: File) : BufferedImage = {
     new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB)

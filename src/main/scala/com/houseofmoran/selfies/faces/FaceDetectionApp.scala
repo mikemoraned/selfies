@@ -3,12 +3,12 @@ package com.houseofmoran.selfies.faces
 import java.io.File
 import javax.imageio.ImageIO
 
-import scala.collection.JavaConversions._
-
+import com.houseofmoran.selfies.{ImageFile, ImageFiles}
 import org.openimaj.image.ImageUtilities
-import org.openimaj.image.processing.face.detection.keypoints.{FKEFaceDetector, KEDetectedFace}
-import org.openimaj.image.processing.face.detection.{DetectedFace, CLMFaceDetector, CLMDetectedFace, HaarCascadeDetector}
-import org.openimaj.image.processing.face.util.{KEDetectedFaceRenderer, CLMDetectedFaceRenderer, SimpleDetectedFaceRenderer}
+import org.openimaj.image.processing.face.detection.HaarCascadeDetector
+import org.openimaj.image.processing.face.util.SimpleDetectedFaceRenderer
+
+import scala.collection.JavaConversions._
 
 object FaceDetectionApp {
 
@@ -30,20 +30,15 @@ object FaceDetectionApp {
   }
 
   def main(args: Array[String]): Unit = {
-
     val dirName = new File(args(0))
-    val ImageFiles = "(.+)\\.(...)$".r
-    for (in <- dirName.listFiles() if in.isFile && !in.getName.contains("faces")) {
-      in.getPath match {
-        case ImageFiles(base, ext) => {
-          val out = new File(s"${base}.faces.${ext}")
-          println(s"${in} -> ${out}")
-          showFaces(in, out)
-        }
-        case _ => {
-          println(s"ignoring ${in}")
-        }
-      }
+    for {
+      in <- ImageFiles(dirName)
+      ImageFile(base, ext) = in
+      if !base.contains("faces")
+    } {
+      val out = new File(s"${base}.faces.${ext}")
+      println(s"${in} -> ${out}")
+      showFaces(in.asFile, out)
     }
   }
 }
