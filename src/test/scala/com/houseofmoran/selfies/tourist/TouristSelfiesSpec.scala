@@ -1,11 +1,11 @@
-package com.houseofmoran.selfies
+package com.houseofmoran.selfies.tourist
 
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
 
 import com.houseofmoran.selfies.faces.Faces
-import com.houseofmoran.selfies.tourist.TouristSelfie
+import com.houseofmoran.selfies.{ImageFile, ImageFiles}
 import org.scalatest._
 
 class TouristSelfiesSpec extends FunSuite with Assertions {
