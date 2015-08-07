@@ -36,9 +36,8 @@ object FacesCrawlerApp {
     }
   }
 
-  def detectFaces(entities: Array[MediaEntity]): Map[URL,Seq[DetectedFaceInContext]] = {
-    entities.foldLeft(Map[URL,Seq[DetectedFaceInContext]]())((map, entity) => {
-      val url = new URL(entity.getMediaURL)
+  def detectFaces(urls: Seq[URL]): Map[URL,Seq[DetectedFaceInContext]] = {
+    urls.foldLeft(Map[URL,Seq[DetectedFaceInContext]]())((map, url) => {
       try {
         val bufferedImg = ImageIO.read(url)
 
@@ -128,11 +127,12 @@ object FacesCrawlerApp {
     val selfieStatuses = twitterStream.
       filter(status => {
         val mediaEntities = status.getMediaEntities
-        val detectedFaces =
-          if (mediaEntities != null)
-            detectFaces(mediaEntities)
+        val mediaEntityURLs : Seq[URL] =
+          if (mediaEntities == null)
+            Seq.empty
           else
-            Map[URL,List[DetectedFaceInContext]]()
+            mediaEntities.map(e => new URL(e.getMediaURL))
+        val detectedFaces = detectFaces(mediaEntityURLs)
 
         !filterFaces(detectedFaces).isEmpty
       })
