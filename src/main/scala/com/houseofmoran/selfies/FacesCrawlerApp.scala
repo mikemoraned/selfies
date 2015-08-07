@@ -3,35 +3,15 @@ package com.houseofmoran.selfies
 import java.net.URL
 
 import com.houseofmoran.selfies.faces._
+import com.houseofmoran.selfies.tourist.TouristSelfie
 import com.houseofmoran.spark.twitter.TwitterStreamSource
 import org.apache.spark._
 import org.apache.spark.streaming._
 
 object FacesCrawlerApp {
 
-  def singleFaceOnLeftOrRightOnly(faces: Seq[DetectedFaceInContext]) = {
-    val facePresence = VerticalFacePresence.fromFaces(faces)
-
-    facePresence match {
-      case VerticalFacePresence(Some(faces), None, None) => faces.length == 1
-      case VerticalFacePresence(None, None, Some(faces)) => faces.length == 1
-      case _ => false
-    }
-  }
-
-  def faceInBottomOnly(faces: Seq[DetectedFaceInContext]) = {
-    val facePresence = HorizontalFacePresence.fromFaces(faces)
-
-    facePresence match {
-      case HorizontalFacePresence(None, None, Some(_)) => true
-      case _ => false
-    }
-  }
-
   def filterFaces(urlToFaces: Map[URL, Seq[DetectedFaceInContext]]) = {
-    urlToFaces.filter{case (url, faces) => {
-      singleFaceOnLeftOrRightOnly(faces) && faceInBottomOnly(faces)
-    }}
+    urlToFaces.filter{case (url, faces) => TouristSelfie(faces) }
   }
 
   def main(args: Array[String]): Unit = {
