@@ -1,35 +1,15 @@
 package com.houseofmoran.selfies
 
-import java.awt.geom.Point2D
-import java.awt.geom.Point2D.Double
-import java.awt.image.BufferedImage
-import java.io.IOException
 import java.net.URL
-import javax.imageio.ImageIO
 
 import com.houseofmoran.selfies.faces._
 import com.houseofmoran.spark.twitter.TwitterStreamSource
 import org.apache.spark._
 import org.apache.spark.streaming._
-import org.openimaj.image.ImageUtilities
-import org.openimaj.image.processing.face.detection.{DetectedFace, HaarCascadeDetector}
-import twitter4j.MediaEntity
 
 
 
 object FacesCrawlerApp {
-
-  case class VerticalFacePresence(left: Option[Seq[DetectedFaceInContext]],
-                                  middle: Option[Seq[DetectedFaceInContext]],
-                                  right: Option[Seq[DetectedFaceInContext]])
-
-  def toVerticalFacePresence(faces: Seq[DetectedFaceInContext]) : VerticalFacePresence = {
-    val segmented = faces.groupBy(face => face.toVerticalSegment)
-    VerticalFacePresence(
-      segmented.get(LeftVertical),
-      segmented.get(MiddleVertical),
-      segmented.get(RightVertical))
-  }
 
   case class HorizontalFacePresence(top: Option[Seq[DetectedFaceInContext]],
                                     middle: Option[Seq[DetectedFaceInContext]],
@@ -44,7 +24,7 @@ object FacesCrawlerApp {
   }
 
   def singleFaceOnLeftOrRightOnly(faces: Seq[DetectedFaceInContext]) = {
-    val facePresence = toVerticalFacePresence(faces)
+    val facePresence = VerticalFacePresence.fromFaces(faces)
 
     facePresence match {
       case VerticalFacePresence(Some(faces), None, None) => faces.length == 1
