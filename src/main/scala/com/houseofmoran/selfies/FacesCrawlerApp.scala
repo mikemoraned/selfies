@@ -15,49 +15,9 @@ import org.openimaj.image.ImageUtilities
 import org.openimaj.image.processing.face.detection.{DetectedFace, HaarCascadeDetector}
 import twitter4j.MediaEntity
 
-import scala.collection.JavaConversions._
+
 
 object FacesCrawlerApp {
-
-  case class DetectedFaceInContext(face: DetectedFace, img: BufferedImage) {
-    def normalizedCentroid : Point2D = {
-      val centroid = face.getBounds.calculateCentroid()
-      new Double(centroid.getX / img.getWidth, centroid.getY / img.getHeight())
-    }
-
-    def toVerticalSegment : VerticalSegment = {
-      val centroid = normalizedCentroid
-      VerticalSegment.classify(centroid.getX)
-    }
-
-    def toHorizontalSegment : HorizontalSegment = {
-      val centroid = normalizedCentroid
-      HorizontalSegment.classify(centroid.getY)
-    }
-  }
-
-  def detectFaces(urls: Seq[URL]): Map[URL,Seq[DetectedFaceInContext]] = {
-    urls.foldLeft(Map[URL,Seq[DetectedFaceInContext]]())((map, url) => {
-      try {
-        val bufferedImg = ImageIO.read(url)
-
-        val img = ImageUtilities.createFImage(bufferedImg)
-
-        val detector = new HaarCascadeDetector()
-
-        val inContext = detector.detectFaces(img).map(face => {
-          DetectedFaceInContext(face, bufferedImg)
-        })
-
-        return map.updated(url, inContext)
-      }
-      catch {
-        case e: IOException => {
-          return map
-        }
-      }
-    })
-  }
 
   case class VerticalFacePresence(left: Option[Seq[DetectedFaceInContext]],
                                   middle: Option[Seq[DetectedFaceInContext]],
@@ -132,7 +92,7 @@ object FacesCrawlerApp {
             Seq.empty
           else
             mediaEntities.map(e => new URL(e.getMediaURL))
-        val detectedFaces = detectFaces(mediaEntityURLs)
+        val detectedFaces = Faces.detectIn(mediaEntityURLs)
 
         !filterFaces(detectedFaces).isEmpty
       })
