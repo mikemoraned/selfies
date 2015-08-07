@@ -1,7 +1,7 @@
 selfies
 =======
 
-Try to find selfies of people, with other things in background, on twitter.
+Try to find selfies of people, with other things in background, on twitter. Original purpose was to [find tourists taking selfies](http://blog.houseofmoran.com/post/126043044893/looking-for-bobby-but-found-paris-instead).
 
 compiling
 =========
