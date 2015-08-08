@@ -18,6 +18,13 @@ You may see some errors like the following below; they can be ignored as they do
 running
 =======
 
+You'll need a place to store the data:
+
+    mkdir ../selfies-data/
+    
+(We store it outside the current dir because it creates a lot of files and when I open this dir, Intellij
+spends ages indexing all these files)
+
 You'll need a set of credentials for talking to twitter, see oauth.properties-template for instructions.
 
 Once you have an "oauth.properties" file, you can run the crawler:
