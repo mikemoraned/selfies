@@ -22,17 +22,7 @@ object Faces {
     })
   }
 
-  def detectIn(urls: Seq[URL]): Map[URL,Seq[DetectedFaceInContext]] = {
-    urls.foldLeft(Map[URL,Seq[DetectedFaceInContext]]())((map, url) => {
-      try {
-        val bufferedImg = ImageIO.read(url)
-        return map.updated(url, detectIn(bufferedImg))
-      }
-      catch {
-        case e: IOException => {
-          return map
-        }
-      }
-    })
+  def detectIn(imageForURL: Map[URL,BufferedImage]) : Map[URL,Seq[DetectedFaceInContext]] = {
+    imageForURL.mapValues(img => detectIn(img))
   }
 }
