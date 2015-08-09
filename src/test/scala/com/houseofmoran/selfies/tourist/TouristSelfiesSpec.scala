@@ -10,11 +10,18 @@ import org.scalatest._
 
 class TouristSelfiesSpec extends FunSuite with Assertions {
 
-  for((fileName, image) <- imagesInDir(new File("examples/good"))) {
+  for((fileName, image) <- imagesInDir(new File("examples/touristselfies"))) {
     test(s"${fileName} should contain tourist selfies") {
       val faces = Faces.detectIn(image)
       assume(!faces.isEmpty)
       assert(TouristSelfie(faces))
+    }
+  }
+
+  for((fileName, image) <- imagesInDir(new File("examples/chatapps"))) {
+    test(s"${fileName} should not contain tourist selfies") {
+      val faces = Faces.detectIn(image)
+      assert(!TouristSelfie(faces))
     }
   }
 

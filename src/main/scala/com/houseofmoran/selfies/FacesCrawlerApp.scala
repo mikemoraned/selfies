@@ -57,7 +57,7 @@ object FacesCrawlerApp {
             mediaEntities.map(e => e.getMediaURL).mkString(",")
         (id, url, entitiesUrls)
       })
-      .saveAsTextFiles("../selfies-data/withMediaAndSingleFaceOnOneSideAndOnBottom-statusesWithUrls")
+      .saveAsTextFiles("../selfies-data/withMediaAndSingleLargeFaceOnOneSideAndOnBottom-statusesWithUrls")
 
     ssc.start()
     ssc.awaitTermination()

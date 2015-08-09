@@ -3,8 +3,16 @@ package com.houseofmoran.selfies.tourist
 import com.houseofmoran.selfies.faces.{HorizontalFacePresence, VerticalFacePresence, DetectedFaceInContext}
 
 object TouristSelfie {
+
   def apply(faces: Seq[DetectedFaceInContext]): Boolean = {
-    singleFaceOnLeftOrRightOnly(faces) && faceInBottomOnly(faces)
+    faceIsALargePartOfTheImage(faces) && singleFaceOnLeftOrRightOnly(faces) && faceInBottomOnly(faces)
+  }
+
+  def faceIsALargePartOfTheImage(faces: Seq[DetectedFaceInContext]) = {
+    faces.forall(f => {
+      val proportion = f.sizeAsProportionOfImage()
+      proportion >= 0.10 && proportion <= 0.20
+    })
   }
 
   def singleFaceOnLeftOrRightOnly(faces: Seq[DetectedFaceInContext]) = {

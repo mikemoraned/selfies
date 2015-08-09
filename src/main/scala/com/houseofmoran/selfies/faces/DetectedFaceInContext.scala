@@ -7,6 +7,12 @@ import java.awt.image.BufferedImage
 import org.openimaj.image.processing.face.detection.DetectedFace
 
 case class DetectedFaceInContext(face: DetectedFace, img: BufferedImage) {
+  def sizeAsProportionOfImage() = {
+    val faceArea = face.getBounds.width * face.getBounds.height
+    val imgArea = img.getWidth * img.getHeight
+    faceArea / imgArea
+  }
+
   def normalizedCentroid : Point2D = {
     val centroid = face.getBounds.calculateCentroid()
     new Double(centroid.getX / img.getWidth, centroid.getY / img.getHeight())

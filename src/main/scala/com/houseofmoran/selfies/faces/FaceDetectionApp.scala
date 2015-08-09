@@ -12,21 +12,18 @@ import scala.collection.JavaConversions._
 
 object FaceDetectionApp {
 
-  def showFaces(in: File, out: File) = {
-    val bufferedImg = ImageIO.read(in)
-    val img = ImageUtilities.createFImage(bufferedImg)
+  def illustrateFaces(in: File, out: File) = {
+    val img = ImageIO.read(in)
 
-    val mbf = ImageUtilities.createMBFImage(bufferedImg, false)
-
-    // A simple Haar-Cascade face detector
-    val det1 = new HaarCascadeDetector()
-    val faces = det1.detectFaces(img)
-    for(face <- faces) {
+    val detectedFaces = Faces.detectIn(img)
+    val illustration = ImageUtilities.createMBFImage(img, false)
+    for(detectedFace <- detectedFaces) {
+      println(s"proportion of image: ${detectedFace.sizeAsProportionOfImage()}")
       new SimpleDetectedFaceRenderer()
-        .drawDetectedFace(mbf, 10, face)
+        .drawDetectedFace(illustration, 2, detectedFace.face)
     }
 
-    ImageUtilities.write(mbf, out)
+    ImageUtilities.write(illustration, out)
   }
 
   def main(args: Array[String]): Unit = {
@@ -38,7 +35,7 @@ object FaceDetectionApp {
     } {
       val out = new File(s"${base}.faces.${ext}")
       println(s"${in} -> ${out}")
-      showFaces(in.asFile, out)
+      illustrateFaces(in.asFile, out)
     }
   }
 }
