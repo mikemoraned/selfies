@@ -9,15 +9,17 @@ fork := true
 
 scalaVersion := "2.11.4"
 
+resolvers += "ASF snapshot repository" at "http://repository.apache.org/snapshots/"
+
 resolvers += "OpenIMAJ maven releases repository" at "http://maven.openimaj.org"
 
 resolvers += "OpenIMAJ maven snapshots repository" at "http://snapshots.openimaj.org"
 
 libraryDependencies ++= Seq(
-  "org.apache.spark" %% "spark-core" % "1.5.0",
-  "org.apache.spark" %% "spark-sql" % "1.5.0",
-  "org.apache.spark" %% "spark-streaming" % "1.5.0",
-  "org.apache.spark" %% "spark-streaming-twitter" % "1.5.0",
+  "org.apache.spark" %% "spark-core" % "1.5.0-SNAPSHOT",
+  "org.apache.spark" %% "spark-sql" % "1.5.0-SNAPSHOT",
+  "org.apache.spark" %% "spark-streaming" % "1.5.0-SNAPSHOT",
+  "org.apache.spark" %% "spark-streaming-twitter" % "1.5.0-SNAPSHOT",
   "com.github.nscala-time" %% "nscala-time" % "1.6.0")
 
 libraryDependencies ++= Seq(
