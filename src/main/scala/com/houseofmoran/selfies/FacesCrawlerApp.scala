@@ -1,13 +1,14 @@
 package com.houseofmoran.selfies
 
 import java.awt.image.BufferedImage
-import java.io.IOException
+import java.io.{ByteArrayInputStream, IOException}
 import java.net.URL
 import javax.imageio.ImageIO
 
 import com.houseofmoran.selfies.faces._
 import com.houseofmoran.selfies.tourist.TouristSelfie
 import com.houseofmoran.spark.twitter.TwitterStreamSource
+import org.apache.commons.io.IOUtils
 import org.apache.spark._
 import org.apache.spark.streaming._
 import twitter4j.{MediaEntity, Status}
@@ -18,9 +19,9 @@ object FacesCrawlerApp {
     urlToFaces.filter{case (url, faces) => TouristSelfie(faces) }
   }
 
-  def fetchImageAt(url: URL) : Option[BufferedImage] = {
+  def fetchContentsAt(url: URL) : Option[Array[Byte]] = {
     try {
-      return Some(ImageIO.read(url))
+      return Some(IOUtils.toByteArray(url))
     }
     catch {
       case e: IOException => {
@@ -29,7 +30,7 @@ object FacesCrawlerApp {
     }
   }
 
-  def fetchImagesIn(status: Status) : Map[URL, BufferedImage] = {
+  def fetchImageContentsIn(status: Status) : Map[URL, Array[Byte]] = {
     val mediaEntities = status.getMediaEntities
     val mediaEntityURLs : Seq[URL] =
       if (mediaEntities == null)
@@ -37,12 +38,18 @@ object FacesCrawlerApp {
       else
         mediaEntities.map(e => new URL(e.getMediaURL))
 
-    val urlImgPairs = for {
+    val urlContentPairs = for {
       mediaEntityURL <- mediaEntityURLs
-      img <- fetchImageAt(mediaEntityURL)
-    } yield (mediaEntityURL, img)
+      contents <- fetchContentsAt(mediaEntityURL)
+    } yield (mediaEntityURL, contents)
 
-    urlImgPairs.toMap
+    urlContentPairs.toMap
+  }
+
+  def readImages(contentsForURL: Map[URL, Array[Byte]]) : Map[URL,BufferedImage]= {
+    contentsForURL.mapValues(contents => {
+      ImageIO.read(new ByteArrayInputStream(contents))
+    })
   }
 
   def main(args: Array[String]): Unit = {
@@ -61,14 +68,14 @@ object FacesCrawlerApp {
         TwitterStreamSource.streamFromEnv()
       }
 
-    val statusWithImages = twitterStream
+    val statusWithImageContents = twitterStream
       .map( status => {
-        (status, fetchImagesIn(status))
+        (status, fetchImageContentsIn(status))
       })
 
-    val touristSelfies = statusWithImages
-      .filter{ case (status, imageForURL) => {
-        val detectedFaces = Faces.detectIn(imageForURL)
+    val touristSelfies = statusWithImageContents
+      .filter{ case (status, contentsForURL) => {
+        val detectedFaces = Faces.detectIn(readImages(contentsForURL))
         !filterFaces(detectedFaces).isEmpty
       }}
       .window(Minutes(1), Minutes(1))

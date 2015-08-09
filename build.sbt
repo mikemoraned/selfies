@@ -21,6 +21,7 @@ libraryDependencies ++= Seq(
   "com.github.nscala-time" %% "nscala-time" % "1.6.0")
 
 libraryDependencies ++= Seq(
+  "commons-io" % "commons-io" % "2.4",
   "org.slf4j" % "slf4j-log4j12" % "1.7.5",
   "org.mortbay.jetty" % "servlet-api" % "3.0.20100224",
   "org.eclipse.jetty" % "jetty-server" % "9.2.6.v20141205",
