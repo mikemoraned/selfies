@@ -14,10 +14,10 @@ resolvers += "OpenIMAJ maven releases repository" at "http://maven.openimaj.org"
 resolvers += "OpenIMAJ maven snapshots repository" at "http://snapshots.openimaj.org"
 
 libraryDependencies ++= Seq(
-  "org.apache.spark" %% "spark-core" % "1.4.0",
-  "org.apache.spark" %% "spark-sql" % "1.4.0",
-  "org.apache.spark" %% "spark-streaming" % "1.4.0",
-  "org.apache.spark" %% "spark-streaming-twitter" % "1.4.0",
+  "org.apache.spark" %% "spark-core" % "1.5.0",
+  "org.apache.spark" %% "spark-sql" % "1.5.0",
+  "org.apache.spark" %% "spark-streaming" % "1.5.0",
+  "org.apache.spark" %% "spark-streaming-twitter" % "1.5.0",
   "com.github.nscala-time" %% "nscala-time" % "1.6.0")
 
 libraryDependencies ++= Seq(
