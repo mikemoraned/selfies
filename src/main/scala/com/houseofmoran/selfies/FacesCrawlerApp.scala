@@ -17,10 +17,10 @@ object FacesCrawlerApp {
 
   def main(args: Array[String]): Unit = {
     val conf = new SparkConf().setAppName("FacesCrawlerApp")
-    if (!conf.contains("master")) {
-      println("No master set, assuming running locally")
-      conf.setMaster("local[*]")
-    }
+//    if (!conf.contains("master")) {
+//      println("No master set, assuming running locally")
+//      conf.setMaster("local[*]")
+//    }
 
     val sc = new SparkContext(conf)
     val windowLength = Seconds(10)
