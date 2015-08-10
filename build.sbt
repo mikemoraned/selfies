@@ -35,5 +35,11 @@ libraryDependencies += "org.openimaj" % "image-processing" % "1.3.1"
 
 libraryDependencies += "org.openimaj" % "faces" % "1.3.1"
 
+
 libraryDependencies ++= Seq(
   "org.scalatest" % "scalatest_2.11" % "2.2.1" % "test")
+
+mergeStrategy in assembly <<= (mergeStrategy in assembly) { (old) => {
+    case pl @ PathList("META-INF", xs @ _*) => old(pl)
+    case _ => MergeStrategy.first
+}}
