@@ -15,7 +15,7 @@ object FacesCrawlerApp {
   }
 
   def main(args: Array[String]): Unit = {
-    val conf = new SparkConf().setAppName("FacesCrawlerApp").setMaster("local[*]")
+    val conf = new SparkConf().setAppName("FacesCrawlerApp") //.setMaster("local[*]")
     val sc = new SparkContext(conf)
     val windowLength = Seconds(10)
     implicit val ssc = new StreamingContext(sc, windowLength)
